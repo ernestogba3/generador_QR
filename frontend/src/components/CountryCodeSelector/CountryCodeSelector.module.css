@@ -1,0 +1,161 @@
+/* Mobile first */
+
+.container {
+  position: relative;
+  flex-shrink: 0;
+  width: 100px;
+}
+
+/* Botón trigger */
+.trigger {
+  width: 100%;
+  padding: 12px 8px;
+  font-size: 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.trigger:hover {
+  border-color: #667eea;
+}
+
+.trigger:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.triggerContent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.flag {
+  font-size: 16px;
+}
+
+.code {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Flecha que rota al abrir */
+.arrow {
+  font-size: 10px;
+  color: #667eea;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.arrowOpen {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 280px;               /* Más ancho que el trigger */
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 100;               /* Por encima de otros elementos */
+  overflow: hidden;
+}
+
+/* Buscador */
+.searchContainer {
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  outline: none;
+  font-family: inherit;
+  color: #333;
+}
+
+.searchInput:focus {
+  border-color: #667eea;
+}
+
+/* Lista de países */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;          /* Altura máxima con scroll */
+  overflow-y: auto;
+}
+
+/* Cada país */
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.item:hover {
+  background: #f5f5ff;
+}
+
+/* País seleccionado actualmente */
+.itemSelected {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.itemFlag {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.itemCountry {
+  font-size: 13px;
+  color: #333;
+  flex: 1;
+}
+
+.itemCode {
+  font-size: 13px;
+  color: #667eea;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.noResults {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+/* Tablet: 768px y más */
+@media (min-width: 768px) {
+  .container {
+    width: 110px;
+  }
+
+  .dropdown {
+    width: 300px;
+  }
+}

@@ -1,0 +1,58 @@
+/* Mobile first */
+
+.qrForm {
+  background: white;
+  border-radius: 16px;
+  padding: 24px 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Cabecera del formulario con título y botón limpiar */
+.formHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.formTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+/* Botón limpiar */
+.clearButton {
+  font-size: 13px;
+  color: #e53e3e;
+  background: none;
+  border: 1px solid #e53e3e;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background: #e53e3e;
+  color: white;
+}
+
+/* Tablet: 768px y más */
+@media (min-width: 768px) {
+  .qrForm {
+    padding: 32px 24px;
+  }
+
+  .formTitle {
+    font-size: 20px;
+  }
+}
+
+/* Desktop: 1024px y más */
+@media (min-width: 1024px) {
+  .qrForm {
+    padding: 40px 32px;
+  }
+}

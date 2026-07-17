@@ -1,0 +1,145 @@
+/* Mobile first */
+/* Este archivo es compartido por todos los componentes de FormFields */
+
+.fieldsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.input:hover,
+.textarea:hover,
+.select:hover {
+  border-color: #667eea;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.4;
+}
+
+.error {
+  font-size: 12px;
+  color: #e53e3e;
+  line-height: 1.4;
+}
+
+/* Contenedor del desplegable de país y el input de teléfono */
+.phoneContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Desplegable de código de país */
+.countrySelect {
+  padding: 12px 8px;
+  font-size: 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+  flex-shrink: 0;
+  width: 90px;
+}
+
+.countrySelect:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* El input de teléfono ocupa todo el espacio disponible */
+.phoneContainer .input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Input con error */
+.inputError {
+  border-color: #e53e3e;
+}
+
+.inputError:focus {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15);
+}
+
+/* Tablet: 768px y más */
+@media (min-width: 768px) {
+  .label {
+    font-size: 15px;
+  }
+
+  .input,
+  .textarea,
+  .select {
+    font-size: 16px;
+  }
+
+  .hint {
+    font-size: 13px;
+  }
+
+  .countrySelect {
+    width: 100px;
+  }
+}
+
+/* Indicador de campo obligatorio */
+.required {
+  color: #e53e3e;
+  margin-left: 2px;
+}
+
+/* Indicador de campo opcional */
+.optional {
+  color: #999;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 4px;
+}

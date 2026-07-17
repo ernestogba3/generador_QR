@@ -1,0 +1,77 @@
+/* Mobile first */
+
+.qrSection {
+  padding: 24px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.qrContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.previewWrapper {
+  order: 1;
+  width: 100%;
+}
+
+.formWrapper {
+  order: 2;
+  width: 100%;
+}
+
+.placeholder {
+  background: #f5f5f5;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+/* Tablet: 768px y más */
+@media (min-width: 768px) {
+  .qrSection {
+    padding: 32px 24px;
+  }
+
+  .qrContainer {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+  }
+
+  .formWrapper {
+    order: 1;
+    flex: 1;
+  }
+
+  /* Preview sticky solo en tablet y desktop */
+  /* En móvil no tiene sentido porque ocupa toda la pantalla */
+  .previewWrapper {
+    order: 2;
+    flex: 1;
+    position: sticky;          /* ← Hace el preview sticky */
+    top: 24px;                 /* ← Distancia desde el top de la pantalla */
+    align-self: flex-start;    /* ← Necesario para que sticky funcione en flexbox */
+  }
+}
+
+/* Desktop: 1024px y más */
+@media (min-width: 1024px) {
+  .qrSection {
+    padding: 40px 32px;
+  }
+
+  .qrContainer {
+    gap: 48px;
+  }
+
+  .previewWrapper {
+    top: 32px;                 /* ← Un poco más de espacio en desktop */
+  }
+}
