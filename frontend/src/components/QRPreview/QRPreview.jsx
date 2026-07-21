@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import QRCodeStyling from 'qr-code-styling';
 import { generateQRValue } from '../../utils/qrGenerator';
 import { downloadQR, generateFilename } from '../../utils/downloadFile';
+import { qrSTyleOptions } from '../../utils/qrStyleOptions';
 import { FormatSelector } from '../FormatSelector/FormatSelector';
 import styles from './QRPreview.module.css';
 
@@ -14,24 +15,8 @@ export const QRPreview = ({ category, formData, format, onFormatChange }) => {
   const hasValue = qrValue.trim().length > 0;
 
   useEffect(() => {
-    qrInstance.current = new QRCodeStyling({
-      width: 280,
-      height: 280,
-      type: 'svg',
-      dotsOptions: {
-        color: '#1a1a2e',
-        type: 'rounded',
-      },
-      backgroundOptions: {
-        color: '#ffffff',
-      },
-      cornersSquareOptions: {
-        type: 'extra-rounded',
-      },
-      cornersDotOptions: {
-        type: 'dot',
-      },
-    });
+    qrInstance.current = new QRCodeStyling(qrSTyleOptions);
+
 
     if (qrRef.current) {
       qrInstance.current.append(qrRef.current);
@@ -46,8 +31,13 @@ export const QRPreview = ({ category, formData, format, onFormatChange }) => {
 
   // Descarga el QR en el formato seleccionado
   const handleDownload = async () => {
+    if(!hasValue) return;
+
     const filename = generateFilename(category, formData);
-    await downloadQR(qrInstance.current, format, filename);
+    const downloadInstance = new QRCodeStyling({
+      ...qrSTyleOptions,data:qrValue,
+    });
+    await downloadQR(downloadInstance, format, filename);
   };
 
   return (
