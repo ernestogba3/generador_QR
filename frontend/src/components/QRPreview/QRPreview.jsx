@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import QRCodeStyling from 'qr-code-styling';
 import { generateQRValue } from '../../utils/qrGenerator';
 import { downloadQR, generateFilename } from '../../utils/downloadFile';
-import { qrSTyleOptions } from '../../utils/qrStyleOptions';
+import { qrStyleOptions } from '../../utils/qrStyleOptions';
 import { FormatSelector } from '../FormatSelector/FormatSelector';
 import styles from './QRPreview.module.css';
 
@@ -15,7 +15,7 @@ export const QRPreview = ({ category, formData, format, onFormatChange }) => {
   const hasValue = qrValue.trim().length > 0;
 
   useEffect(() => {
-    qrInstance.current = new QRCodeStyling(qrSTyleOptions);
+    qrInstance.current = new QRCodeStyling(qrStyleOptions);
 
 
     if (qrRef.current) {
@@ -35,7 +35,7 @@ export const QRPreview = ({ category, formData, format, onFormatChange }) => {
 
     const filename = generateFilename(category, formData);
     const downloadInstance = new QRCodeStyling({
-      ...qrSTyleOptions,data:qrValue,
+      ...qrStyleOptions,data:qrValue,
     });
     await downloadQR(downloadInstance, format, filename);
   };
