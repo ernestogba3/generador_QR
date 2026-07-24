@@ -1,0 +1,16 @@
+.qrCustomizer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e2e2e8;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}

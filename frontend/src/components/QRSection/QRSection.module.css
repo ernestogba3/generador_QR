@@ -18,9 +18,12 @@
   width: 100%;
 }
 
-.formWrapper {
+.formColumn {
   order: 2;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .placeholder {
@@ -45,19 +48,18 @@
     gap: 32px;
   }
 
-  .formWrapper {
+  .formColumn {
     order: 1;
     flex: 1;
   }
 
   /* Preview sticky solo en tablet y desktop */
-  /* En móvil no tiene sentido porque ocupa toda la pantalla */
   .previewWrapper {
     order: 2;
     flex: 1;
-    position: sticky;          /* ← Hace el preview sticky */
-    top: 24px;                 /* ← Distancia desde el top de la pantalla */
-    align-self: flex-start;    /* ← Necesario para que sticky funcione en flexbox */
+    position: sticky;
+    top: 24px;
+    align-self: flex-start;
   }
 }
 
@@ -72,6 +74,6 @@
   }
 
   .previewWrapper {
-    top: 32px;                 /* ← Un poco más de espacio en desktop */
+    top: 32px;
   }
 }
