@@ -1,5 +1,3 @@
-// Opciones de estilo compartidas entre la instancia de preview
-// y las instancias temporales creadas para cada descarga.
 export const qrStyleOptions = {
   width: 280,
   height: 280,
@@ -19,15 +17,28 @@ export const qrStyleOptions = {
   },
 };
 
-// Combina las opciones base con los valores de personalización elegidos
-// por el usuario en QRCustomizer (color y forma de los puntos).
-// Centralizar esta mezcla aquí evita repetirla en QRPreview (preview y
-// descarga la necesitan por igual) y en futuros pasos (fondo, tamaño...).
-export const buildQROptions = ({ dotsColor, dotsType }) => ({
+export const buildQROptions = ({
+  dotsColor,
+  dotsType,
+  cornersSquareColor,
+  cornersSquareType,
+  cornersDotColor,
+  cornersDotType,
+}) => ({
   ...qrStyleOptions,
   dotsOptions: {
     ...qrStyleOptions.dotsOptions,
     color: dotsColor,
     type: dotsType,
+  },
+  cornersSquareOptions: {
+    ...qrStyleOptions.cornersSquareOptions,
+    color: cornersSquareColor,
+    type: cornersSquareType,
+  },
+  cornersDotOptions: {
+    ...qrStyleOptions.cornersDotOptions,
+    color: cornersDotColor,
+    type: cornersDotType,
   },
 });

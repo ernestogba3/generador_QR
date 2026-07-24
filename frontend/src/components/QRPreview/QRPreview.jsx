@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
-import QRCodeStyling from 'qr-code-styling';
-import { generateQRValue } from '../../utils/qrGenerator';
-import { downloadQR, generateFilename } from '../../utils/downloadFile';
-import { buildQROptions } from '../../utils/qrStyleOptions';
-import { FormatSelector } from '../FormatSelector/FormatSelector';
-import styles from './QRPreview.module.css';
+import { useEffect, useRef } from "react";
+import QRCodeStyling from "qr-code-styling";
+import { generateQRValue } from "../../utils/qrGenerator";
+import { downloadQR, generateFilename } from "../../utils/downloadFile";
+import { buildQROptions } from "../../utils/qrStyleOptions";
+import { FormatSelector } from "../FormatSelector/FormatSelector";
+import styles from "./QRPreview.module.css";
 
 export const QRPreview = ({
   category,
@@ -13,20 +13,28 @@ export const QRPreview = ({
   onFormatChange,
   dotsColor,
   dotsType,
+  cornersSquareColor,
+  cornersSquareType,
+  cornersDotColor,
+  cornersDotType,
 }) => {
-
   const qrRef = useRef(null);
   const qrInstance = useRef(null);
 
   const qrValue = generateQRValue(category, formData);
   const hasValue = qrValue.trim().length > 0;
 
-  // Se crea una sola vez, con los valores de personalización que haya
-  // en ese momento. Los cambios posteriores de color/forma se aplican
-  // con .update() en el efecto de abajo, no recreando la instancia.
-  useEffect(() => {
-    qrInstance.current = new QRCodeStyling(buildQROptions({ dotsColor, dotsType }));
+  const customization = {
+    dotsColor,
+    dotsType,
+    cornersSquareColor,
+    cornersSquareType,
+    cornersDotColor,
+    cornersDotType,
+  };
 
+  useEffect(() => {
+    qrInstance.current = new QRCodeStyling(buildQROptions(customization));
     if (qrRef.current) {
       qrInstance.current.append(qrRef.current);
     }
@@ -38,23 +46,37 @@ export const QRPreview = ({
       qrInstance.current.update({
         data: qrValue,
         dotsOptions: { color: dotsColor, type: dotsType },
+        cornersSquareOptions: {
+          color: cornersSquareColor,
+          type: cornersSquareType,
+        },
+        cornersDotOptions: { color: cornersDotColor, type: cornersDotType },
       });
     }
-  }, [qrValue, hasValue, dotsColor, dotsType]);
+  }, [
+    qrValue,
+    hasValue,
+    dotsColor,
+    dotsType,
+    cornersSquareColor,
+    cornersSquareType,
+    cornersDotColor,
+    cornersDotType,
+  ]);
 
   const handleDownload = async () => {
     if (!hasValue) return;
 
     const filename = generateFilename(category, formData);
     const downloadInstance = new QRCodeStyling({
-      ...buildQROptions({ dotsColor, dotsType }),
+      ...buildQROptions(customization),
       data: qrValue,
     });
     await downloadQR(downloadInstance, format, filename);
   };
+
   return (
     <div className={styles.qrPreview}>
-
       <div className={styles.previewHeader}>
         <h2 className={styles.previewTitle}>Vista previa</h2>
       </div>
@@ -63,7 +85,7 @@ export const QRPreview = ({
         <div
           ref={qrRef}
           className={styles.qrCanvas}
-          style={{ display: hasValue ? 'flex' : 'none' }}
+          style={{ display: hasValue ? "flex" : "none" }}
         />
 
         {!hasValue && (
@@ -83,7 +105,6 @@ export const QRPreview = ({
         onDownload={handleDownload}
         hasValue={hasValue}
       />
-
     </div>
   );
 };

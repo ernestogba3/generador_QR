@@ -14,3 +14,25 @@
   color: #1a1a2e;
   margin: 0;
 }
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e2e8;
+}
+
+.group:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.groupTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #888888;
+  margin: 0;
+}
