@@ -13,7 +13,7 @@ export const Header = () => {
         <div className={styles.brand}>
           <span className={styles.brandName}>ToolsBox</span>
           <span className={styles.brandSeparator}>/</span>
-          <span className={styles.toolName}>Generador QR</span>
+         <h1 className={styles.toolName}>Generador de QR</h1>
         </div>
 
         {/* Descripción corta de la herramienta */}
