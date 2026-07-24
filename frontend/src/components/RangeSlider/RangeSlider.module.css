@@ -1,0 +1,29 @@
+.rangeSlider {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.value {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #555555;
+}
+
+.slider {
+  width: 100%;
+  accent-color: #1a1a2e;
+  cursor: pointer;
+}

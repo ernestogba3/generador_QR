@@ -13,9 +13,10 @@ export const QRSection = ({
   onFormatChange,
 }) => {
   const {
-    dotsColor, setDotsColor, dotsType, setDotsType,
-    cornersSquareColor, setCornersSquareColor, cornersSquareType, setCornersSquareType,
-    cornersDotColor, setCornersDotColor, cornersDotType, setCornersDotType,
+    customization,
+    updateCustomization,
+    resetCustomization,
+    isDefaultCustomization,
   } = useQRCustomization();
 
   return (
@@ -28,12 +29,7 @@ export const QRSection = ({
             formData={formData}
             format={format}
             onFormatChange={onFormatChange}
-            dotsColor={dotsColor}
-            dotsType={dotsType}
-            cornersSquareColor={cornersSquareColor}
-            cornersSquareType={cornersSquareType}
-            cornersDotColor={cornersDotColor}
-            cornersDotType={cornersDotType}
+            customization={customization}
           />
         </div>
 
@@ -49,18 +45,10 @@ export const QRSection = ({
 
           <div className={styles.customizerWrapper}>
             <QRCustomizer
-              dotsColor={dotsColor}
-              onDotsColorChange={setDotsColor}
-              dotsType={dotsType}
-              onDotsTypeChange={setDotsType}
-              cornersSquareColor={cornersSquareColor}
-              onCornersSquareColorChange={setCornersSquareColor}
-              cornersSquareType={cornersSquareType}
-              onCornersSquareTypeChange={setCornersSquareType}
-              cornersDotColor={cornersDotColor}
-              onCornersDotColorChange={setCornersDotColor}
-              cornersDotType={cornersDotType}
-              onCornersDotTypeChange={setCornersDotType}
+              customization={customization}
+              onCustomizationChange={updateCustomization}
+              onReset={resetCustomization}
+              showReset={!isDefaultCustomization}
             />
           </div>
         </div>
@@ -68,4 +56,4 @@ export const QRSection = ({
       </div>
     </section>
   );
-};
+};  

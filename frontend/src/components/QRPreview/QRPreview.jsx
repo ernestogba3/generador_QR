@@ -11,27 +11,13 @@ export const QRPreview = ({
   formData,
   format,
   onFormatChange,
-  dotsColor,
-  dotsType,
-  cornersSquareColor,
-  cornersSquareType,
-  cornersDotColor,
-  cornersDotType,
+  customization,
 }) => {
   const qrRef = useRef(null);
   const qrInstance = useRef(null);
 
   const qrValue = generateQRValue(category, formData);
   const hasValue = qrValue.trim().length > 0;
-
-  const customization = {
-    dotsColor,
-    dotsType,
-    cornersSquareColor,
-    cornersSquareType,
-    cornersDotColor,
-    cornersDotType,
-  };
 
   useEffect(() => {
     qrInstance.current = new QRCodeStyling(buildQROptions(customization));
@@ -45,24 +31,22 @@ export const QRPreview = ({
     if (qrInstance.current && hasValue) {
       qrInstance.current.update({
         data: qrValue,
-        dotsOptions: { color: dotsColor, type: dotsType },
+        width: customization.size,
+        height: customization.size,
+        margin: customization.margin,
+        dotsOptions: { color: customization.dotsColor, type: customization.dotsType },
+        backgroundOptions: { color: customization.backgroundColor },
         cornersSquareOptions: {
-          color: cornersSquareColor,
-          type: cornersSquareType,
+          color: customization.cornersSquareColor,
+          type: customization.cornersSquareType,
         },
-        cornersDotOptions: { color: cornersDotColor, type: cornersDotType },
+        cornersDotOptions: {
+          color: customization.cornersDotColor,
+          type: customization.cornersDotType,
+        },
       });
     }
-  }, [
-    qrValue,
-    hasValue,
-    dotsColor,
-    dotsType,
-    cornersSquareColor,
-    cornersSquareType,
-    cornersDotColor,
-    cornersDotType,
-  ]);
+  }, [qrValue, hasValue, customization]);
 
   const handleDownload = async () => {
     if (!hasValue) return;
@@ -98,7 +82,6 @@ export const QRPreview = ({
         )}
       </div>
 
-      {/* FormatSelector con botón de descarga */}
       <FormatSelector
         format={format}
         onFormatChange={onFormatChange}

@@ -23,7 +23,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 280px;
+  min-height: 448px; /* antes: 280px. Ahora el tamaño del QR es
+    ajustable hasta 400px + el padding de 24px por cada lado (48px total);
+    con un min-height fijo al máximo posible, el recuadro no "salta" de
+    tamaño mientras arrastras el slider de tamaño */
   background: #f9f9f9;
   border-radius: 12px;
   padding: 24px;
@@ -74,3 +77,4 @@
     padding: 40px 32px;
   }
 }
+

@@ -1,0 +1,40 @@
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.safe {
+  background: #e6f7ed;
+  color: #0f6e3f;
+}
+.safe .dot {
+  background: #1fa15a;
+}
+
+.risky {
+  background: #fff6e0;
+  color: #8a5d00;
+}
+.risky .dot {
+  background: #e0a300;
+}
+
+.unsafe {
+  background: #fdeaea;
+  color: #a11d1d;
+}
+.unsafe .dot {
+  background: #d43f3f;
+}

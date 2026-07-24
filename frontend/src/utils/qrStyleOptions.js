@@ -1,44 +1,25 @@
 export const qrStyleOptions = {
-  width: 280,
-  height: 280,
   type: 'svg',
-  dotsOptions: {
-    color: '#1a1a2e',
-    type: 'rounded',
-  },
-  backgroundOptions: {
-    color: '#ffffff',
-  },
-  cornersSquareOptions: {
-    type: 'extra-rounded',
-  },
-  cornersDotOptions: {
-    type: 'dot',
-  },
 };
 
-export const buildQROptions = ({
-  dotsColor,
-  dotsType,
-  cornersSquareColor,
-  cornersSquareType,
-  cornersDotColor,
-  cornersDotType,
-}) => ({
+export const buildQROptions = (customization) => ({
   ...qrStyleOptions,
+  width: customization.size,
+  height: customization.size,
+  margin: customization.margin,
   dotsOptions: {
-    ...qrStyleOptions.dotsOptions,
-    color: dotsColor,
-    type: dotsType,
+    color: customization.dotsColor,
+    type: customization.dotsType,
+  },
+  backgroundOptions: {
+    color: customization.backgroundColor,
   },
   cornersSquareOptions: {
-    ...qrStyleOptions.cornersSquareOptions,
-    color: cornersSquareColor,
-    type: cornersSquareType,
+    color: customization.cornersSquareColor,
+    type: customization.cornersSquareType,
   },
   cornersDotOptions: {
-    ...qrStyleOptions.cornersDotOptions,
-    color: cornersDotColor,
-    type: cornersDotType,
+    color: customization.cornersDotColor,
+    type: customization.cornersDotType,
   },
 });

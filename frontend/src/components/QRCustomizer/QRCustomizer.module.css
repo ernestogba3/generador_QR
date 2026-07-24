@@ -36,3 +36,23 @@
   color: #888888;
   margin: 0;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resetButton {
+  background: none;
+  border: none;
+  color: #4a4ae0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.resetButton:hover {
+  text-decoration: underline;
+}
