@@ -14,7 +14,7 @@ const DEFAULT_CUSTOMIZATION = {
   cornersDotColor: '#1a1a2e',
   cornersDotType: 'dot',
   backgroundColor: '#ffffff',
-  size: 280,
+  size: 180,
   margin: 0,
 };
 

@@ -3,71 +3,82 @@
 .qrPreview {
   background: white;
   border-radius: 16px;
-  padding: 24px 16px;
+  padding: 8px 4px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .previewHeader {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .previewTitle {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: #1a1a2e;
   margin: 0;
 }
 
-/* Área donde se muestra el QR */
 .previewArea {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 448px; /* antes: 280px. Ahora el tamaño del QR es
-    ajustable hasta 400px + el padding de 24px por cada lado (48px total);
-    con un min-height fijo al máximo posible, el recuadro no "salta" de
-    tamaño mientras arrastras el slider de tamaño */
+  min-height: 100px;
   background: #f9f9f9;
   border-radius: 12px;
-  padding: 24px;
+  padding: 8px;
 }
 
-/* Div donde qr-code-styling renderiza el QR */
 .qrCanvas {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Estado vacío cuando no hay datos */
 .emptyState {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   text-align: center;
 }
 
 .emptyIcon {
-  font-size: 48px;
+  font-size: 32px;
 }
 
 .emptyText {
-  font-size: 14px;
+  font-size: 12px;
   color: #999;
   margin: 0;
-  line-height: 1.5;
-  max-width: 200px;
+  line-height: 1.4;
+  max-width: 150px;
 }
 
 /* Tablet: 768px y más */
 @media (min-width: 768px) {
   .qrPreview {
-    padding: 32px 24px;
+    padding: 20px 16px;
+  }
+
+  .previewHeader {
+    margin-bottom: 16px;
   }
 
   .previewTitle {
-    font-size: 20px;
+    font-size: 16px;
+  }
+
+  .previewArea {
+    min-height: 200px;
+    padding: 16px;
+  }
+
+  .emptyIcon {
+    font-size: 40px;
+  }
+
+  .emptyText {
+    font-size: 13px;
   }
 }
 
@@ -76,5 +87,25 @@
   .qrPreview {
     padding: 40px 32px;
   }
-}
 
+  .previewHeader {
+    margin-bottom: 24px;
+  }
+
+  .previewTitle {
+    font-size: 20px;
+  }
+
+  .previewArea {
+    min-height: 160px;
+    padding: 24px;
+  }
+
+  .emptyIcon {
+    font-size: 48px;
+  }
+
+  .emptyText {
+    font-size: 14px;
+  }
+}
