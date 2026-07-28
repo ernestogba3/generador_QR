@@ -1,3 +1,7 @@
+// QRPreview.jsx - ACTUALIZADO
+// Ahora recibe isFormValid como prop
+// El botón Descargar solo se habilita si isFormValid = true
+
 import { useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
 import { generateQRValue } from "../../utils/qrGenerator";
@@ -12,12 +16,19 @@ export const QRPreview = ({
   format,
   onFormatChange,
   customization,
+  isFormValid,
 }) => {
   const qrRef = useRef(null);
   const qrInstance = useRef(null);
 
   const qrValue = generateQRValue(category, formData);
   const hasValue = qrValue.trim().length > 0;
+
+  // ✅ NUEVA LÓGICA: El botón solo está habilitado si:
+  // 1. Hay contenido en el QR (hasValue)
+  // 2. El formulario es válido (isFormValid)
+  // Antes solo chequeaba hasValue, ahora chequea ambas condiciones
+  const isDownloadEnabled = hasValue && isFormValid;
 
   useEffect(() => {
     qrInstance.current = new QRCodeStyling(buildQROptions(customization));
@@ -49,7 +60,8 @@ export const QRPreview = ({
   }, [qrValue, hasValue, customization]);
 
   const handleDownload = async () => {
-    if (!hasValue) return;
+    // ✅ NUEVA VALIDACIÓN: Verificamos isDownloadEnabled antes de descargar
+    if (!isDownloadEnabled) return;
 
     const filename = generateFilename(category, formData);
     const downloadInstance = new QRCodeStyling({
@@ -82,11 +94,12 @@ export const QRPreview = ({
         )}
       </div>
 
+      {/* ✅ Pasamos isDownloadEnabled a FormatSelector */}
       <FormatSelector
         format={format}
         onFormatChange={onFormatChange}
         onDownload={handleDownload}
-        hasValue={hasValue}
+        hasValue={isDownloadEnabled}
       />
     </div>
   );

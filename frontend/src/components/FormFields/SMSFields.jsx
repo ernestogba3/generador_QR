@@ -1,20 +1,34 @@
-// SMSFields.jsx muestra los campos para generar un QR de SMS.
-// Valida el teléfono y tiene el selector de país personalizado.
+// SMSFields.jsx - REFACTORIZADO
+// Ahora usa el custom hook useFormValidation para validar el teléfono
+// El mensaje es opcional, no requiere validación
 
 import { useState } from 'react';
 import { DEFAULT_COUNTRY_CODE } from '../../constants/countryCodes';
-import { isValidPhone, ERROR_MESSAGES } from '../../utils/validators';
+import { useFormValidation } from '../../hooks/useFormValidation';
 import { CountryCodeSelector } from '../CountryCodeSelector/CountryCodeSelector';
 import styles from './FormFields.module.css';
 
 export const SMSFields = ({ formData, onFormChange }) => {
 
+  // ✅ Mantenemos el estado local del código de país
+  // Esto es específico de este componente
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
-  const [touched, setTouched] = useState({ phone: false });
 
-  const isPhoneValid = isValidPhone(formData.phoneNumber || '');
-  const showPhoneError = touched.phone && !isPhoneValid && formData.phoneNumber;
+  // ✅ Usamos el custom hook para gestionar validación del teléfono
+  // El hook recibe:
+  //   - 'sms': la categoría (valida el campo 'phoneNumber')
+  //   - formData: los datos del formulario actual
+  // El hook devuelve:
+  //   - errors: objeto con los errores
+  //   - touched: objeto con los campos tocados
+  //   - handleBlur: función que marca un campo como tocado
+  const { errors, touched, handleBlur } = useFormValidation('sms', formData);
 
+  // Helper: mostramos el error solo si el campo fue tocado Y hay error
+  const showPhoneError = touched.phone && errors.phone;
+
+  // Manejador para cambio de código de país
+  // Actualiza el código y reconstruye el número completo
   const handleCountryChange = (newCode) => {
     setCountryCode(newCode);
     onFormChange({
@@ -24,8 +38,15 @@ export const SMSFields = ({ formData, onFormChange }) => {
     });
   };
 
+  // Manejador para cambio en el número de teléfono
+  // Solo permite números (sin espacios ni caracteres especiales)
   const handlePhoneChange = (e) => {
+    // Filtramos solo números
     const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
+    
+    // Actualizamos el formData con:
+    // - phoneNumber: solo el número (sin código de país)
+    // - phone: el número completo (código + número)
     onFormChange({
       ...formData,
       phoneNumber: onlyNumbers,
@@ -33,15 +54,13 @@ export const SMSFields = ({ formData, onFormChange }) => {
     });
   };
 
+  // Manejador para cambio en el mensaje del SMS
+  // El mensaje es opcional, no requiere validación especial
   const handleMessageChange = (e) => {
     onFormChange({
       ...formData,
       message: e.target.value
     });
-  };
-
-  const handleBlur = (field) => {
-    setTouched({ ...touched, [field]: true });
   };
 
   return (
@@ -54,10 +73,13 @@ export const SMSFields = ({ formData, onFormChange }) => {
         </label>
 
         <div className={styles.phoneContainer}>
+          {/* Desplegable personalizado con buscador de código de país */}
           <CountryCodeSelector
             value={countryCode}
             onChange={handleCountryChange}
           />
+          
+          {/* Input del número de teléfono */}
           <input
             id="smsPhone"
             type="tel"
@@ -69,15 +91,17 @@ export const SMSFields = ({ formData, onFormChange }) => {
           />
         </div>
 
+        {/* Muestra el número completo (con código de país) como ayuda */}
         {formData.phone && (
           <span className={styles.hint}>
             Número completo: {formData.phone}
           </span>
         )}
 
+        {/* Mostrar error si existe */}
         {showPhoneError && (
           <span className={styles.error}>
-            {ERROR_MESSAGES.invalidPhone}
+            {errors.phone}
           </span>
         )}
       </div>

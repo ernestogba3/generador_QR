@@ -1,35 +1,37 @@
-// VCardFields.jsx muestra los campos para generar un QR de contacto.
-// Valida el teléfono, email y URL si se rellenan.
+// VCardFields.jsx - REFACTORIZADO
+// Ahora usa el custom hook useFormValidation para validar campos
+// El nombre es obligatorio, el resto son opcionales (pero deben ser válidos si se rellenan)
 
 import { useState } from 'react';
 import { DEFAULT_COUNTRY_CODE } from '../../constants/countryCodes';
-import { isValidEmail, isValidPhone, isValidURL, ERROR_MESSAGES } from '../../utils/validators';
+import { useFormValidation } from '../../hooks/useFormValidation';
 import { CountryCodeSelector } from '../CountryCodeSelector/CountryCodeSelector';
 import styles from './FormFields.module.css';
 
 export const VCardFields = ({ formData, onFormChange }) => {
 
+  // ✅ Mantenemos el estado local del código de país
+  // Esto es específico de este componente
   const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY_CODE);
 
-  // Controlamos el foco de cada campo por separado
-  const [touched, setTouched] = useState({
-    firstName: false,
-    phone: false,
-    email: false,
-    website: false,
-  });
+  // ✅ Usamos el custom hook para gestionar validación de vCard
+  // El hook recibe:
+  //   - 'vcard': la categoría
+  //   - formData: los datos del formulario actual
+  // El hook devuelve:
+  //   - errors: objeto con los errores (firstName, phone, email, website)
+  //   - touched: objeto con los campos tocados
+  //   - handleBlur: función que marca un campo como tocado
+  const { errors, touched, handleBlur } = useFormValidation('vcard', formData);
 
-  // Validaciones
-  const isPhoneValid = !formData.phoneNumber || isValidPhone(formData.phoneNumber);
-  const isEmailValid = !formData.email || isValidEmail(formData.email);
-  const isWebsiteValid = !formData.website || isValidURL(formData.website);
+  // Helpers para mostrar errores de campos específicos
+  const showFirstNameError = touched.firstName && errors.firstName;
+  const showPhoneError = touched.phone && errors.phone;
+  const showEmailError = touched.email && errors.email;
+  const showWebsiteError = touched.website && errors.website;
 
-  // Errores - solo si el campo fue tocado y tiene valor inválido
-  const showPhoneError = touched.phone && !isPhoneValid;
-  const showEmailError = touched.email && !isEmailValid;
-  const showWebsiteError = touched.website && !isWebsiteValid;
-  const showFirstNameError = touched.firstName && !formData.firstName;
-
+  // Manejador genérico de cambio
+  // Actualiza cualquier campo en el formData
   const handleChange = (field, value) => {
     onFormChange({
       ...formData,
@@ -37,6 +39,8 @@ export const VCardFields = ({ formData, onFormChange }) => {
     });
   };
 
+  // Manejador para cambio de código de país
+  // Actualiza el código y reconstruye el número completo
   const handleCountryChange = (newCode) => {
     setCountryCode(newCode);
     onFormChange({
@@ -46,8 +50,15 @@ export const VCardFields = ({ formData, onFormChange }) => {
     });
   };
 
+  // Manejador para cambio en el número de teléfono
+  // Solo permite números (sin espacios ni caracteres especiales)
   const handlePhoneChange = (e) => {
+    // Filtramos solo números
     const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
+    
+    // Actualizamos el formData con:
+    // - phoneNumber: solo el número (sin código de país)
+    // - phone: el número completo (código + número)
     onFormChange({
       ...formData,
       phoneNumber: onlyNumbers,
@@ -55,14 +66,10 @@ export const VCardFields = ({ formData, onFormChange }) => {
     });
   };
 
-  const handleBlur = (field) => {
-    setTouched({ ...touched, [field]: true });
-  };
-
   return (
     <div className={styles.fieldsContainer}>
 
-      {/* Nombre (obligatorio) */}
+      {/* Nombre (OBLIGATORIO) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="firstName" className={styles.label}>
           Nombre <span className={styles.required}>*</span>
@@ -76,14 +83,16 @@ export const VCardFields = ({ formData, onFormChange }) => {
           placeholder="Juan"
           className={`${styles.input} ${showFirstNameError ? styles.inputError : ''}`}
         />
+        
+        {/* Mostrar error si existe */}
         {showFirstNameError && (
           <span className={styles.error}>
-            {ERROR_MESSAGES.required}
+            {errors.firstName}
           </span>
         )}
       </div>
 
-      {/* Apellido (opcional) */}
+      {/* Apellido (OPCIONAL) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="lastName" className={styles.label}>
           Apellido <span className={styles.optional}>(opcional)</span>
@@ -98,16 +107,19 @@ export const VCardFields = ({ formData, onFormChange }) => {
         />
       </div>
 
-      {/* Teléfono con selector de país (opcional) */}
+      {/* Teléfono con selector de país (OPCIONAL pero debe ser válido si se rellena) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="vcardPhone" className={styles.label}>
           Teléfono <span className={styles.optional}>(opcional)</span>
         </label>
         <div className={styles.phoneContainer}>
+          {/* Desplegable personalizado con buscador de código de país */}
           <CountryCodeSelector
             value={countryCode}
             onChange={handleCountryChange}
           />
+          
+          {/* Input del número de teléfono */}
           <input
             id="vcardPhone"
             type="tel"
@@ -118,14 +130,16 @@ export const VCardFields = ({ formData, onFormChange }) => {
             className={`${styles.input} ${showPhoneError ? styles.inputError : ''}`}
           />
         </div>
+        
+        {/* Mostrar error si existe */}
         {showPhoneError && (
           <span className={styles.error}>
-            {ERROR_MESSAGES.invalidPhone}
+            {errors.phone}
           </span>
         )}
       </div>
 
-      {/* Email (opcional) */}
+      {/* Email (OPCIONAL pero debe ser válido si se rellena) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="vcardEmail" className={styles.label}>
           Email <span className={styles.optional}>(opcional)</span>
@@ -139,14 +153,16 @@ export const VCardFields = ({ formData, onFormChange }) => {
           placeholder="juan@ejemplo.com"
           className={`${styles.input} ${showEmailError ? styles.inputError : ''}`}
         />
+        
+        {/* Mostrar error si existe */}
         {showEmailError && (
           <span className={styles.error}>
-            {ERROR_MESSAGES.invalidEmail}
+            {errors.email}
           </span>
         )}
       </div>
 
-      {/* Empresa (opcional) */}
+      {/* Empresa (OPCIONAL, sin validación) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="company" className={styles.label}>
           Empresa <span className={styles.optional}>(opcional)</span>
@@ -161,7 +177,7 @@ export const VCardFields = ({ formData, onFormChange }) => {
         />
       </div>
 
-      {/* Cargo (opcional) */}
+      {/* Cargo (OPCIONAL, sin validación) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="jobTitle" className={styles.label}>
           Cargo <span className={styles.optional}>(opcional)</span>
@@ -176,7 +192,7 @@ export const VCardFields = ({ formData, onFormChange }) => {
         />
       </div>
 
-      {/* Sitio web (opcional) */}
+      {/* Sitio web (OPCIONAL pero debe ser válido si se rellena) */}
       <div className={styles.fieldGroup}>
         <label htmlFor="website" className={styles.label}>
           Sitio web <span className={styles.optional}>(opcional)</span>
@@ -190,11 +206,15 @@ export const VCardFields = ({ formData, onFormChange }) => {
           placeholder="https://ejemplo.com"
           className={`${styles.input} ${showWebsiteError ? styles.inputError : ''}`}
         />
+        
+        {/* Mostrar error si existe */}
         {showWebsiteError && (
           <span className={styles.error}>
-            {ERROR_MESSAGES.invalidURL}
+            {errors.website}
           </span>
         )}
+        
+        {/* Ayuda al usuario */}
         <span className={styles.hint}>
           Solo el nombre es obligatorio, el resto de campos son opcionales
         </span>

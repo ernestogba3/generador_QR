@@ -1,33 +1,26 @@
-// EmailFields.jsx muestra los campos para generar un QR de email.
-// Valida el formato del email con regex al perder el foco.
+// EmailFields.jsx
+// ANTES: Validación local con useState
+// AHORA: Usando el custom hook useFormValidation
 
-import { useState } from 'react';
-import { isValidEmail, ERROR_MESSAGES } from '../../utils/validators';
+import { useFormValidation } from '../../hooks/useFormValidation';
 import styles from './FormFields.module.css';
 
 export const EmailFields = ({ formData, onFormChange }) => {
 
-  // Controlamos el foco de cada campo por separado
-  const [touched, setTouched] = useState({
-    email: false,
-  });
+  // Usamos el custom hook para toda la lógica de validación
+  // El hook recibe: categoría y datos del formulario
+  // Devuelve: errors, isFormValid, touched, handleBlur
+  const { errors, touched, handleBlur } = useFormValidation('email', formData);
 
-  // Validación del email
-  const isEmailValid = isValidEmail(formData.email || '');
-  const showEmailError = touched.email && !isEmailValid && formData.email;
+  // Helpers para mostrar errores específicamente en el email
+  // Si el campo fue tocado (blur) Y hay error, mostramos el mensaje
+  const showEmailError = touched.email && errors.email;
 
+  // Manejador de cambio: actualiza el formData cuando el usuario escribe
   const handleChange = (field, value) => {
     onFormChange({
       ...formData,
       [field]: value
-    });
-  };
-
-  // Marcamos el campo como tocado al perder el foco
-  const handleBlur = (field) => {
-    setTouched({
-      ...touched,
-      [field]: true
     });
   };
 
@@ -39,6 +32,8 @@ export const EmailFields = ({ formData, onFormChange }) => {
         <label htmlFor="email" className={styles.label}>
           Email <span className={styles.required}>*</span>
         </label>
+        
+        {/* Input del email */}
         <input
           id="email"
           type="email"
@@ -48,9 +43,11 @@ export const EmailFields = ({ formData, onFormChange }) => {
           placeholder="ejemplo@correo.com"
           className={`${styles.input} ${showEmailError ? styles.inputError : ''}`}
         />
+        
+        {/* Mostrar error si existe */}
         {showEmailError && (
           <span className={styles.error}>
-            {ERROR_MESSAGES.invalidEmail}
+            {errors.email}
           </span>
         )}
       </div>
